@@ -29,7 +29,7 @@ export class CustomTelemetryExporter implements SpanExporter {
         const spanData: SpanData = {
           traceId: span.spanContext().traceId,
           spanId: span.spanContext().spanId,
-          parentSpanId: span.parentSpanId,
+          // parentSpanId: span.parentSpanId,
           name: span.name,
           kind: this.getSpanKind(span.kind),
           startTime: span.startTime[0] * 1e9 + span.startTime[1], // ナノ秒に変換

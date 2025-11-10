@@ -4,6 +4,9 @@ import { PrefectureButtons } from '@/components/PrefectureButtons';
 import { TelemetryDisplay } from '@/components/TelemetryDisplay';
 import { isValidPrefecture, PREFECTURES } from '@/lib/utils/weather';
 
+// import '@/lib/telemetry/client-console';
+import '@/lib/telemetry/client';
+
 interface PageProps {
   params: Promise<{
     prefecture: string;
