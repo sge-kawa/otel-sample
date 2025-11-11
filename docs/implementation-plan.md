@@ -29,33 +29,35 @@
 - ✅ `components/TelemetryDisplay.tsx`: OpenTelemetry情報表示コンポーネント（初期はプレースホルダー）
 - ✅ `components/WeatherClient.tsx`: クライアントサイドで天気を取得するコンポーネント
 
-### 段階2: OpenTelemetry導入 ⏳ 未着手
+### 段階2: OpenTelemetry導入 ✅ 完了
 
-#### 2.1 パッケージインストール ⏳ 未着手
-- ⏳ `@vercel/otel`
-- ⏳ `@opentelemetry/sdk-logs`
-- ⏳ `@opentelemetry/api-logs`
-- ⏳ `@opentelemetry/instrumentation`
+#### 2.1 パッケージインストール ✅ 完了
+- ✅ `@vercel/otel`
+- ✅ `@opentelemetry/sdk-logs`
+- ✅ `@opentelemetry/api-logs`
+- ✅ `@opentelemetry/instrumentation`
+- ✅ `@opentelemetry/exporter-otlp-http`
+- ✅ `@opentelemetry/sdk-trace-base`
 
-#### 2.2 OpenTelemetry設定ファイル作成 ⏳ 未着手
-- ⏳ `instrumentation.ts`: Next.jsのinstrumentation設定
-  - ⏳ コンソール出力のOn/Off設定（環境変数で制御）
-  - ⏳ OTLPエクスポーター設定（X-Ray対応の準備）
-  - ⏳ カスタムエクスポーター（画面表示用）
+#### 2.2 OpenTelemetry設定ファイル作成 ✅ 完了
+- ✅ `instrumentation.ts`: Next.jsのinstrumentation設定
+  - ✅ コンソール出力のOn/Off設定（環境変数で制御）
+  - ✅ OTLPエクスポーター設定（X-Ray対応の準備）
+  - ✅ カスタムエクスポーター（画面表示用）
 
-#### 2.3 Next.js設定更新 ⏳ 未着手
-- ⏳ `next.config.ts`: `experimental.instrumentationHook: true` を追加
+#### 2.3 Next.js設定更新 ✅ 完了
+- ✅ `next.config.ts`: Next.js 16ではinstrumentation.tsがデフォルトで有効なため、設定不要
 
-#### 2.4 カスタムエクスポーター実装 ⏳ 未着手
-- ⏳ `lib/telemetry/custom-exporter.ts`: スパン情報を収集してクライアントに送信するカスタムエクスポーター
-- ⏳ `lib/telemetry/context.ts`: スパン情報を管理するコンテキスト（サーバー/クライアント間で共有）
+#### 2.4 カスタムエクスポーター実装 ✅ 完了
+- ✅ `lib/telemetry/custom-exporter.ts`: スパン情報を収集してクライアントに送信するカスタムエクスポーター
+- ✅ `lib/telemetry/context.ts`: スパン情報を管理するコンテキスト（サーバー/クライアント間で共有）
 
 ### 段階3: デフォルト計測の確認とドキュメント作成 ⏳ 未着手
 
-#### 3.1 計測確認 ⏳ 未着手
-- ⏳ サーバーサイドのfetchが自動計測されるか確認
-- ⏳ クライアントサイドのfetchが自動計測されるか確認
-- ⏳ ページレンダリングが自動計測されるか確認
+#### 3.1 計測確認 ✅ 完了
+- ✅ サーバーサイドのfetchが自動計測されるか確認 → **計測される**
+- ✅ クライアントサイドのfetchが自動計測されるか確認 → **計測されない**
+- ✅ ページレンダリングが自動計測されるか確認 → **計測される**
 
 #### 3.2 ドキュメント作成 ⏳ 未着手
 - ⏳ `docs/telemetry-measurement.md`: 計測結果をまとめたマークダウン
@@ -74,7 +76,7 @@
 
 #### 4.2 計測できない部分への計測追加 ⏳ 未着手
 - ⏳ サーバーサイドfetchにカスタム属性追加（必要に応じて）
-- ⏳ クライアントサイドfetchにカスタム属性追加（必要に応じて）
+- ⏳ クライアントサイドfetchに手動計測追加（自動計測されないため必須）
 - ⏳ 画面描画の計測追加（必要に応じて）
 
 #### 4.3 画面表示機能の実装 ⏳ 未着手
@@ -95,9 +97,9 @@
 - 無効な場合は404ページを表示
 
 ### OpenTelemetryの計測範囲
-- サーバーサイド: Next.jsの自動計測 + カスタム計測
-- クライアントサイド: fetch APIの自動計測 + カスタム計測
-- 画面描画: Reactのレンダリング計測（必要に応じて）
+- サーバーサイド: Next.jsの自動計測（fetch、ページレンダリング） + カスタム計測
+- クライアントサイド: ページレンダリングの自動計測 + カスタム計測（fetchは自動計測されないため手動計測が必要）
+- 画面描画: Reactのレンダリング計測（自動計測される）
 
 ### ビジネスロジックとの分離
 - 計測用のヘルパー関数を別ファイルに分離
@@ -109,6 +111,11 @@
 ### 型定義・ユーティリティ
 - `lib/types/weather.ts` - 天気予報APIの型定義
 - `lib/utils/weather.ts` - 天気予報API呼び出しユーティリティ
+
+### OpenTelemetry関連
+- `instrumentation.ts` - Next.jsのOpenTelemetry設定
+- `lib/telemetry/custom-exporter.ts` - カスタムエクスポーター（スパン情報を収集）
+- `lib/telemetry/context.ts` - スパン情報管理コンテキスト
 
 ### コンポーネント
 - `components/WeatherDisplay.tsx` - 天気情報表示コンポーネント
@@ -124,10 +131,8 @@
 
 ## 次のステップ
 
-1. 現状の動作確認（段階1の動作テスト）
-2. 段階2: OpenTelemetryパッケージのインストール
-3. 段階2: instrumentation.tsの作成と設定
-4. 段階2: カスタムエクスポーターの実装
-5. 段階3: デフォルト計測の確認とドキュメント作成
-6. 段階4: 手動計測の実装
+1. ✅ 段階1: ダッシュボード・各県のページ作成（完了）
+2. ✅ 段階2: OpenTelemetry導入（完了）
+3. 段階3: デフォルト計測の確認とドキュメント作成
+4. 段階4: 手動計測の実装
 
